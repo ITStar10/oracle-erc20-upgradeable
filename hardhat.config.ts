@@ -7,6 +7,12 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 
+// newly added
+import "@openzeppelin/hardhat-upgrades";
+import "@nomiclabs/hardhat-ethers"
+
+const { privateKey, mnemonic } = require('/mnt/Work/Sec/ganache_secret.json')
+
 dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -25,11 +31,26 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      accounts: 
+      { mnemonic: mnemonic}        
     },
+    rinkeby: {
+      url: 'https://rinkeby.infura.io/v3/528e4136b860485394a6344853b8d477',     
+      accounts: 
+        privateKey !== undefined ? [privateKey] : []
+    },
+    kovan: {
+      url: 'https://kovan.infura.io/v3/528e4136b860485394a6344853b8d477',
+      accounts: 
+        privateKey !== undefined ? [privateKey] : []
+    },
+    mainnet: {
+      url: 'https://mainnet.infura.io/v3/528e4136b860485394a6344853b8d477',
+      accounts:
+        privateKey !== undefined ? [privateKey] : []
+    }
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
